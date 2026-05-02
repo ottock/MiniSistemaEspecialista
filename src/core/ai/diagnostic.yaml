@@ -1,0 +1,53 @@
+questions:
+  febre_alta: "O paciente apresenta febre acima de 39°C?"
+  febre_baixa_ou_ausente: "O paciente apresenta febre baixa ou não tem febre?"
+  dor_articular_intensa: "O paciente apresenta dor intensa nas articulações?"
+  dor_articular_leve_moderada: "O paciente apresenta dor leve a moderada nas articulações?"
+  dor_olhos: "O paciente sente dor nos olhos?"
+  olhos_vermelhos: "O paciente está com olhos vermelhos?"
+  rash_cutaneo: "O paciente apresenta manchas vermelhas na pele?"
+  prurido: "As manchas causam coceira intensa?"
+  duracao_prolongada_dor: "A dor articular persiste por meses?"
+
+rules:
+  - if: [febre_alta, dor_articular_intensa]
+    then: suspeita_chikungunya
+
+  - if: [dor_articular_intensa, duracao_prolongada_dor]
+    then: chikungunya_cronica
+
+  - if: [suspeita_chikungunya]
+    then: "Diagnóstico: Chikungunya (fase aguda). Dor articular intensa é característica."
+
+  - if: [chikungunya_cronica]
+    then: "Diagnóstico: Chikungunya crônica. Persistência de dor articular."
+
+  - if: [febre_alta, dor_olhos, dor_articular_leve_moderada]
+    then: suspeita_dengue
+
+  - if: [suspeita_dengue]
+    then: "Diagnóstico: Dengue. Dor ocular e febre alta são marcantes."
+
+  - if: [febre_baixa_ou_ausente, rash_cutaneo, prurido]
+    then: suspeita_zika
+
+  - if: [suspeita_zika, olhos_vermelhos]
+    then: zika_completa
+
+  - if: [suspeita_zika]
+    then: "Diagnóstico: Zika. Sintomas leves com rash e coceira."
+
+  - if: [zika_completa]
+    then: "Diagnóstico: Zika com conjuntivite. Forte indicação clínica."
+
+  - if: [rash_cutaneo, prurido, olhos_vermelhos]
+    then: forte_indicio_zika
+
+  - if: [forte_indicio_zika]
+    then: "Diagnóstico: Zika (alta confiança)."
+
+  - if: [febre_alta, rash_cutaneo]
+    then: infeccao_viral_geral
+
+  - if: [infeccao_viral_geral]
+    then: "Alerta: Arbovirose provável. Diferenciação clínica necessária."
